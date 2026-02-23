@@ -1,0 +1,24 @@
+<div class="pattern-wrapper">
+  <div class="pattern-card">
+    <h1>🎀 Crochet Pattern Generator 🎀</h1>
+
+    <%= form_with url: "/generate", method: :post, local: true do |f| %>
+      <div class="form-group">
+        <label>Pattern name</label>
+        <%= text_field_tag :pattern_name, "Flower", class: "input-field", placeholder: "Flower" %>
+      </div>
+
+      <div class="form-group">
+        <label>Width (squares) </label>
+        <%= number_field_tag :width, 20, class: "input-field", placeholder: "20" %>
+      </div>
+
+      <div class="form-group">
+        <label>Height (squares) </label>
+        <%= number_field_tag :height, 20, class: "input-field", placeholder: "20" %>
+      </div>
+
+      <%= submit_tag "Generate :3", class: "generate-btn" %>
+    <% end %>
+  </div>
+</div>
