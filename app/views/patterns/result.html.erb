@@ -1,54 +1,77 @@
-<h2 class="title">🎀 Pattern 🎀</h2>
+<div id="pattern-container">
 
-<div class="grid">
-  <% @grid.each do |row| %>
-    <% row.each do |cell| %>
-      <% if cell == 1 %>
-        <div class="filled"></div>
-      <% else %>
-        <div class="empty"></div>
+  <h2 class="title">🎀 <%= session[:pattern_name] %> 🎀</h2>
+
+  <div class="grid-wrapper">
+    <!-- Top header row -->
+    <div class="corner"></div>
+    <% @grid.first.size.times do |col_index| %>
+      <div class="col-header">
+        <%= col_index + 1 %>
+      </div>
+    <% end %>
+
+    <!-- Grid rows -->
+    <% @grid.each_with_index do |row, row_index| %>
+      <!-- Row header -->
+      <div class="row-header">
+        <%= row_index + 1 %>
+      </div>
+
+      <!-- Cells -->
+      <% row.each do |cell| %>
+        <div class="<%= cell == 1 ? 'filled' : 'empty' %>"></div>
       <% end %>
     <% end %>
-  <% end %>
+  </div>
+
 </div>
 
 <br>
-<%= link_to "Back", root_path, class: "back-button" %>
+<div class="buttons">
+  <%= link_to "Back", root_path, class: "button" %>
+  <%= link_to "PDF", download_pdf_path, class: "button" %>
+  <button id="download-png" class="button">PNG</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script>
+  document.getElementById("download-png").addEventListener("click", function() {
+    html2canvas(document.getElementById("pattern-container"), { 
+      backgroundColor: null
+    }).then(canvas => {
+      const link = document.createElement("a");
+     link.download = "<%= j(session[:pattern_name]) %>.png"; 
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    });
+  });
+</script>
+
 
 <style>
-  /* Center everything */
   body, html {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    # font-family: 'Comic Sans MS', cursive, sans-serif;
     background: #ffeef8;
     min-height: 100vh;
     margin: 0;
   }
+
+  #pattern-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
 
   .title {
     color: #ff69b4;
     font-size: 2.5rem;
     margin-bottom: 20px;
     text-shadow: 1px 1px #fff;
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(<%= @grid.first.size %>, 25px);
-    gap: 4px;
-    background: #fff0f5;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(255, 105, 180, 0.3);
-  }
-
-  .grid div {
-    width: 25px;
-    height: 25px;
-    border-radius: 5px;
   }
 
   .filled {
@@ -60,9 +83,8 @@
     border: 1px solid #ffb6c1;
   }
 
-  .back-button {
+  .button {
     display: inline-block;
-    margin-top: 20px;
     padding: 10px 20px;
     background-color: #ff69b4;
     color: white;
@@ -70,9 +92,47 @@
     text-decoration: none;
     border-radius: 10px;
     transition: 0.3s;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;  
+    font-size: inherit;     
+    line-height: normal;
   }
 
   .back-button:hover {
     background-color: #ff85c1;
   }
+
+.grid-wrapper {
+  display: grid;
+  grid-template-columns: 40px repeat(<%= @grid.first.size %>, 40px);
+  grid-auto-rows: 40px;  
+  gap: 4px;
+
+  background: #fff0f5;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(255, 105, 180, 0.3);
+
+  div{
+    border-radius: 5px;
+  }
+
+.row-header,
+.col-header,
+.corner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #ff69b4;
+  }
+
+.buttons {
+    display: flex;            
+    gap: 10px;               
+    justify-content: center;  
+    margin-top: 20px;        
+  }
+}
 </style>

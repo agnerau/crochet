@@ -10,12 +10,12 @@
 
       <div class="form-group">
         <label>Width (squares) </label>
-        <%= number_field_tag :width, 20, class: "input-field", placeholder: "20" %>
+        <%= number_field_tag :width, 10, class: "input-field", placeholder: "10", min: GRID_MIN, max: GRID_MAX, step: 1 %>
       </div>
 
       <div class="form-group">
         <label>Height (squares) </label>
-        <%= number_field_tag :height, 20, class: "input-field", placeholder: "20" %>
+        <%= number_field_tag :height, 10, class: "input-field", placeholder: "10", min: GRID_MIN, max: GRID_MAX, step: 1 %>
       </div>
 
       <%= submit_tag "Generate :3", class: "generate-btn" %>

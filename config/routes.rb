@@ -17,4 +17,5 @@
 Rails.application.routes.draw do
   root "patterns#index"
   post "generate", to: "patterns#create"
+  get "download_pdf", to: "patterns#download_pdf"
 end
